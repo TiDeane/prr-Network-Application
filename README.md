@@ -18,9 +18,10 @@ Please refer to the [license terms](https://creativecommons.org/licenses/by-nc-n
 Project specification: https://web.tecnico.ulisboa.pt/~david.matos/w/pt/index.php/Programa%C3%A7%C3%A3o_com_Objectos/Projecto_de_Programa%C3%A7%C3%A3o_com_Objectos/Enunciado_do_Projecto_de_2022-2023
 -->
 
-To run the code:
-- $ export CLASSPATH=$(pwd)/po-uilib/po-uilib.jar:$(pwd)/prr/prr-core/prr-core.jar:$(pwd)/prr/prr-app/prr-app.jar
-- $ java prr.app.App
+Running instructions:
+- `$ export CLASSPATH=$(pwd)/po-uilib/po-uilib.jar:$(pwd)/prr/prr-core/prr-core.jar:$(pwd)/prr/prr-app/prr-app.jar`
+- `$ make`
+- `$ java prr.app.App`
 
 It is possible to start the application with a text file specified by the Java import property.
 
