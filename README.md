@@ -1,6 +1,6 @@
 # prr Network Application
 
-IST Object-Oriented Programming project, 2022/2023. The objective was to develop an application for managing a network of communication terminals, called prr. Generally, the program allows the registration, management and consultation of clients, terminals and communications.
+IST Object-Oriented Programming project, 2022/2023. The objective was to develop an application for managing a network of communication terminals, called prr. The program allows the registration, management and consultation of clients, terminals and communications. It utilizes the library `po-uilib`, defended under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International license.
 
 -----------------------------------
 It is possible to start the application with a text file specified by the Java import property.
