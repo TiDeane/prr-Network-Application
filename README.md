@@ -1,19 +1,29 @@
 # prr Network Application
 
-IST Object-Oriented Programming project, 2022/2023. The objective was to develop an application for managing a network of communication terminals, called prr. The program allows the registration, management and consultation of clients, terminals and communications. It utilizes the library `po-uilib`, defended under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International license.
+IST Object-Oriented Programming project, 2022/2023. The objective of this project was to develop an application for managing a network of communication terminals, called prr. The program allows the registration, management and consultation of clients, terminals and communications.
 
------------------------------------
+-------------------
+
+This project utilizes the UI library `po-uilib`, made for the Object-Oriented Programming course at IST university for supporting small interactive applications. **No modifications were made to the `po-uilib` library.**
+
+- **Library:** `po-uilib`
+- **License:** [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en)
+- **Latest Version** (as of 2023/12/20): https://web.tecnico.ulisboa.pt/~david.matos/w/pt/images/7/71/Po-uilib-202308010000.tar.bz2
+
+Please refer to the [license terms](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en) for further details.
+
+-------------------
+
 It is possible to start the application with a text file specified by the Java import property.
 
-The various entities have the formats described below. It is assumed that titles cannot contain the character '|'. There are no malformed entries.
+The various entities have the formats described below. It is assumed that titles cannot contain the character '|'. There are no malformed entries.  \
+Each line follows the following formats:
 
-Each line has a distinct description, but follows the following formats:
+`CLIENT|id|name|taxId`  \
+`terminal-type|idTerminal|idClient|state`  \
+`FRIENDS|idTerminal|idTerminal1,...,idTerminalN`
 
-CLIENT|id|name|taxId
-terminal-type|idTerminal|idClient|state
-FRIENDS|idTerminal|idTerminal1,...,idTerminalN
+- For clients, `id` is composed of 6 characters, `name` is a character string and `taxID` is composed of 6 digits;
+- For terminals, `terminal-type` is either _BASIC_ or _FANCY_, `idTerminal` is composed of 6 digits and `state` is _ON_, _OFF_ or _SILENCE_.
 
-- A client's `id` is composed of 6 characters and `taxID` of 6 digits;
-- A terminal's `terminal-type` is _BASIC_ or _FANCY_, `idTerminal` is composed of 6 digits and `state` is _ON_, _OFF_ or _SILENCE_;
-
-Client definitions always precede terminal definitions. Connections between friends are always after the definition of the remaining entities. For terminals, terminal-type is BASIC or FANCY.
+Client definitions always precede terminal definitions. Connections between friends are always after the definition of the remaining entities.
