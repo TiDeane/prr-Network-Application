@@ -23,6 +23,8 @@ Running instructions:
 - `$ make`
 - `$ java prr.app.App`
 
+- -------------------
+
 It is possible to start the application with a text file specified by the Java import property.
 
 The various entities have the formats described below. It is assumed that titles cannot contain the character '|'. There are no malformed entries.  \
