@@ -19,9 +19,9 @@ Project specification: https://web.tecnico.ulisboa.pt/~david.matos/w/pt/index.ph
 -->
 
 Running instructions:
-- `$ export CLASSPATH=$(pwd)/po-uilib/po-uilib.jar:$(pwd)/prr/prr-core/prr-core.jar:$(pwd)/prr/prr-app/prr-app.jar`
-- `$ make`
-- `$ java prr.app.App`
+- Inside **prr/**: `$ make`
+- On the root of the repository: `$ export CLASSPATH=$(pwd)/po-uilib/po-uilib.jar:$(pwd)/prr/prr-core/prr-core.jar:$(pwd)/prr/prr-app/prr-app.jar`
+- On the root of the repository: `$ java prr.app.App`
 
 - -------------------
 
