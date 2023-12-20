@@ -1,0 +1,131 @@
+package prr.clients;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
+
+import prr.terminals.*;
+import prr.clients.notifications.*;
+import prr.clients.tariffplans.*;
+
+import prr.exceptions.NotificationsAlreadyEnabledException;
+import prr.exceptions.NotificationsAlreadyDisabledException;
+
+public class Client implements Serializable, Comparable<Client> {
+
+    private String _key;
+    private String _name;
+    private int _taxId;
+
+    private TariffPlan _tariffPlan;
+    private double _payments = 0;
+    private double _debts = 0;
+
+    private boolean _terminalNotifications = true;
+
+    private TreeMap<String, Terminal> _terminals = new TreeMap<String, Terminal>();
+    private ArrayList<Notification> _notifications = new ArrayList<Notification>();
+
+    private ClientType _type;
+
+    public Client(String key, String name, int taxId) {
+        _key = key;
+        _name = name;
+        _taxId = taxId;
+        _type = new NormalType(this);
+        _tariffPlan = new BasePlan(this);
+    }
+
+    public void setType(ClientType type) {
+        _type = type;
+    }
+
+    public ClientType getType() { return _type; }
+
+    public TariffPlan getTariffPlan() { return _tariffPlan; }
+
+    public String getKey() { return _key; }
+
+    public double getPayments() { return _payments; }
+
+    public long getRoundedPayments() {
+        long payments = (long) _payments;
+        return payments;
+    }
+
+    public double getDebts() { return _debts; }
+
+    public long getRoundedDebts() {
+        long debts = (long) _debts;
+        return debts;
+    }
+
+    public boolean getNotificationsStatus() { return _terminalNotifications; }
+
+    public Terminal getTerminal(String id) {
+        return _terminals.get(id);
+    }
+
+    public Collection<Terminal> getAllClientTerminals() {
+        return _terminals.values();
+    }
+
+    public Collection<Terminal> getAllClientUnusedTerminals() {
+        List<Terminal> tList = new ArrayList<Terminal>();
+        for (Terminal t : _terminals.values()) {
+            if (t.checkUnused()) {
+                tList.add(t);
+            }
+        }
+        return tList;
+    }
+
+    public Collection<Terminal> getAllClientTerminalsWithPositiveBalance() {
+        List<Terminal> tList = new ArrayList<Terminal>();
+        for (Terminal t : _terminals.values()) {
+            if (t.getBalance()>0) {
+                tList.add(t);
+            }
+        }
+        return tList;
+    }
+
+    public Collection<Notification> getAllClientNotifications() {
+        Collection<Notification> notifications = _notifications;
+        _notifications.clear();
+        return notifications;
+    }
+
+    public void addTerminal(String id, Terminal terminal) {
+        _terminals.put(id, terminal);
+    }
+
+    public void enableNotifications() throws NotificationsAlreadyEnabledException {
+        if (_terminalNotifications == false)
+            _terminalNotifications = true;
+        throw new NotificationsAlreadyEnabledException();
+    }
+
+    public void disableNotifications() throws NotificationsAlreadyDisabledException {
+        if (_terminalNotifications == true)
+            _terminalNotifications = false;
+        throw new NotificationsAlreadyDisabledException();
+    }
+
+    public String notificationsCheck() {
+        return ((_terminalNotifications == true) ? "YES" : "NO");
+    }
+
+    @Override
+    public String toString() {
+        return "CLIENT|" + _key + "|" + _name + "|" + _taxId + "|" + _type.status() + "|" +
+        notificationsCheck() + "|" + _terminals.size() + "|" + _payments + "|" + _debts;
+    }
+
+    @Override
+    public int compareTo(Client other) {
+        return _key.compareTo(other.getKey());
+    }
+}

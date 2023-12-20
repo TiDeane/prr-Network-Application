@@ -1,0 +1,52 @@
+package prr.communications;
+
+import prr.terminals.*;
+
+public abstract class Communication {
+    private int _id;
+
+    private Terminal _sender;
+    private Terminal _receiver;
+
+    private boolean _communicationStatus;
+    
+    public Communication(int id, Terminal sender, Terminal receiver) {
+        _id = id;
+        _sender = sender;
+        _receiver = receiver;
+        _communicationStatus = true;
+    }
+
+    public int getId() {
+        return _id;
+    }
+
+    public boolean checkSendedId(String key) {
+        return _sender.getClientId().equals(key);
+    }
+
+    public boolean checkReceivedId(String key) {
+        return _receiver.getClientId().equals(key);
+    }
+
+    /* returns "VOICE", "TEXT" or "VIDEO" */
+    public abstract String type();
+
+    /* returns the number of characters for text communications, and the duration
+       for voice or video communications */
+    public abstract int units();
+
+    public abstract double getPrice();
+
+    public abstract long getRoundedPrice();
+
+    public String status() {
+        return ((_communicationStatus == true) ? "ONGOING" : "FINISHED");
+    }
+
+    @Override
+    public String toString() {
+        return type() + "|" + _id + "|" + _sender.getId() + "|" + _receiver.getId()
+        + "|" + units() + "|" + getRoundedPrice() + "|" + status();
+    }
+}

@@ -1,0 +1,153 @@
+package prr.terminals;
+
+import java.io.Serializable;
+import java.util.*;
+
+import prr.communications.*;
+import prr.exceptions.TerminalAlreadyInStateException;
+
+// FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
+
+/**
+ * Abstract terminal.
+ */
+abstract public class Terminal implements Serializable, Comparable<Terminal> {
+
+	/** Serial number for serialization. */
+	private static final long serialVersionUID = 202208091753L;
+
+        private String _id;
+        private String _idClient;
+        private List<Terminal> _friends = new ArrayList<Terminal>();
+        private List<Communication> _communications = new ArrayList<Communication>();
+        private double _payments = 0;
+        private double _debts = 0;
+
+        private TerminalState _state;
+
+        public Terminal(String idTerminal, String idClient) {
+                _id = idTerminal;
+                _idClient = idClient;
+                _state = new IdleState(this);
+        }
+
+        public Terminal(String idTerminal, String idClient, String state) {
+                _id = idTerminal;
+                _idClient = idClient;
+
+                switch(state) {
+                case "ON", "IDLE" -> _state = new IdleState(this);
+                case "SILENCE" -> _state = new SilenceState(this);
+                case "BUSY" ->  _state = new BusyState(this);
+                case "OFF" -> _state = new OffState(this);
+                }
+        }
+
+        public void setState(TerminalState state) throws TerminalAlreadyInStateException {
+                if (_state.status().equals(state.status()))
+                        throw new TerminalAlreadyInStateException();
+                _state = state;
+        }
+
+        public TerminalState getState() { return _state; }
+
+        public String getId() { return _id; }
+
+        public String getClientId() { return _idClient; }
+
+        public double getPayments() { return _payments; }
+
+        public long getRoundedPayments() {
+                long payments = (long) _payments;
+                return payments;
+        }
+
+        public double getDebts() { return _debts; }
+
+        public long getRoundedDebts() {
+                long debts = (long) _debts;
+                return debts;
+        }
+        
+        public void addFriend(Terminal t) {
+                if (t.getId() != _id && !_friends.contains(t))
+                        _friends.add(t);
+        }
+
+        public void removeFriend(Terminal t) {
+                if (_friends.contains(t))
+                        _friends.remove(t);
+        }
+
+        public boolean checkFriend(Terminal other) {
+                String id = other.getId();
+                for (Terminal t : _friends)
+                        if (t.getId().equals(id))
+                                return true;
+                return false;
+        }
+
+        public List<Communication> getAllTerminalCommunications() {
+                return _communications;
+        }
+
+        public List<Communication> getAllTerminalCommunicationsFromClient() {
+                List<Communication> cList = new ArrayList<Communication>();
+                for(Communication c : _communications) {
+                        if (c.checkSendedId(_idClient)) {
+                                cList.add(c);
+                        }
+                }
+                return cList;
+        }
+
+        public List<Communication> getAllTerminalCommunicationsToClient() {
+                List<Communication> cList = new ArrayList<Communication>();
+                for(Communication c : _communications) {
+                        if (c.checkReceivedId(_idClient)) {
+                                cList.add(c);
+                        }
+                }
+                return cList;
+        }
+
+        /**
+         * Checks if this terminal can end the current interactive communication.
+         *
+         * @return true if this terminal is busy (i.e., it has an active interactive communication) and
+         *          it was the originator of this communication.
+         **/
+        public boolean canEndCurrentCommunication() {
+                // FIXME add implementation code
+                return false; // TEMPORARY CODE (used to compile)
+        }
+
+        /**
+         * Checks if this terminal can start a new communication.
+         *
+         * @return true if this terminal is neither off neither busy, false otherwise.
+         **/
+        public boolean canStartCommunication() {
+                // FIXME add implementation code
+                return true; // TEMPORARY CODE (used to compile)
+        }
+
+        public String friendsToString() {
+                String res = "";
+
+                if (_friends.size() > 0) {
+                        Collections.sort(_friends);
+
+                        res += "|" + _friends.get(0);
+                        if (_friends.size() > 1)
+                                for (int i = 1; i < _friends.size(); i++)
+                                        res += ("," + _friends.get(i));
+                }
+                return res;
+        }
+
+        @Override
+        public int compareTo(Terminal other) {
+                return Integer.parseInt(_id) - Integer.parseInt(other.getId());
+        }
+}
